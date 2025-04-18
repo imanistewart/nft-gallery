@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob's NFT Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nft {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+        .nft img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .nft-info {
+            margin-top: 10px;
+        }
+        .nft-info h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .nft-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        async function fetchNFTs() {
+            try {
+                const response = await fetch("/nfts");
+                const data = await response.json();
+
+                console.log("Fetched NFTs from backend:", data);
+
+                if (data.nfts) {
+                    const gallery = document.getElementById("gallery");
+                    gallery.innerHTML = '';  // Clear the gallery before appending new NFTs
+
+                    // Loop through NFTs and create HTML for each
+                    for (let nft of data.nfts) {
+                        console.log("Processing NFT:", nft);
+
+                        const nftElement = document.createElement("div");
+                        nftElement.classList.add("nft");
+
+                        try {
+                            const metadataResponse = await fetch(nft.metadataURI);
+
+                            // Check if the metadata URI points to a JSON response
+                            const contentType = metadataResponse.headers.get("content-type");
+
+                            if (contentType && contentType.includes("application/json")) {
+                                // It's JSON, fetch the metadata
+                                const metadata = await metadataResponse.json();
+                                const imageUrl = metadata.image || "https://via.placeholder.com/250";  // Fallback image URL
+
+                                nftElement.innerHTML = `
+                                    <img src="${imageUrl}" alt="${nft.name}" />
+                                    <div class="nft-info">
+                                        <h3>${nft.name}</h3>
+                                        <p>${nft.description}</p>
+                                        <p><strong>Metadata URI:</strong> ${nft.metadataURI}</p>
+                                    </div>
+                                `;
+                            } else {
+                                // It's not JSON (likely an image URL)
+                                console.warn(`Metadata for NFT ${nft.name} is not a valid JSON response.`);
+                                nftElement.innerHTML = `
+                                    <img src="${nft.metadataURI}" alt="${nft.name}" />
+                                    <div class="nft-info">
+                                        <h3>${nft.name}</h3>
+                                        <p>${nft.description}</p>
+                                        <p><strong>Metadata URI:</strong> ${nft.metadataURI}</p>
+                                        <p><em>Direct image URL used as metadata.</em></p>
+                                    </div>
+                                `;
+                            }
+                        } catch (error) {
+                            console.error("Error fetching metadata for NFT:", nft.name, error);
+                        }
+
+                        gallery.appendChild(nftElement);
+                    }
+                } else {
+                    alert("No NFTs found for Bob.");
+                }
+            } catch (error) {
+                console.error("Error fetching NFTs:", error);
+            }
+        }
+
+        window.onload = fetchNFTs; // Ensure DOM is fully loaded before running the script
+    </script>
+
+</body>
+</html>
