@@ -1,125 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bob's NFT Gallery</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .nft {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-        }
-        .nft img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .nft-info {
-            margin-top: 10px;
-        }
-        .nft-info h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #333;
-        }
-        .nft-info p {
-            margin: 5px 0;
-            color: #555;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Izzy's NFT Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Baloo 2', cursive;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #F6CF71, #DCB0F2, #8BE0A4, #F89C74);
+      background-size: 600% 600%;
+      animation: gradientBG 20s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-top: 20px;
+      color: #333;
+      text-shadow: 2px 2px #ffffffa6;
+    }
+
+    .instructions {
+      background-color: #ffffffcc;
+      border-left: 6px solid #66C5CC;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      color: #444;
+      text-align: center;
+    }
+
+    .instructions code {
+      background-color: #eaeaea;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .copy-container {
+      margin-top: 10px;
+    }
+
+    .copy-button {
+      padding: 8px 16px;
+      background-color: #66C5CC;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .copy-button:hover {
+      background-color: #56b1b7;
+    }
+
+    .qr-code {
+      margin-top: 15px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .nft {
+      background-color: #ffffffcc;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 300px;
+      padding: 15px;
+    }
+
+    .nft img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .nft-info {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .copy-confirmation {
+      color: green;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
+  <h1>Izzy's NFT Gallery</h1>
 
-    <div class="gallery" id="gallery"></div>
+  <div class="instructions">
+    <p><strong>Want to add NFTs to my gallery?</strong></p>
+    <p>Send any Aptos NFTs to the following address:</p>
+    <p><code id="walletAddress">0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83</code></p>
 
-    <script>
-        async function fetchNFTs() {
+    <div class="copy-container">
+      <button class="copy-button" onclick="copyAddress()">Copy Wallet Address</button>
+      <div id="copyConfirmation" class="copy-confirmation" style="display:none;">Copied!</div>
+    </div>
+
+    <div class="qr-code">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83" alt="QR Code">
+    </div>
+    
+    <p>They’ll automatically appear in the gallery once they’re confirmed on the network!</p>
+  </div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    function copyAddress() {
+      const address = document.getElementById("walletAddress").textContent;
+      navigator.clipboard.writeText(address).then(() => {
+        document.getElementById("copyConfirmation").style.display = "block";
+        setTimeout(() => {
+          document.getElementById("copyConfirmation").style.display = "none";
+        }, 2000);
+      });
+    }
+  
+    async function fetchNFTs() {
+      try {
+        const response = await fetch("/nfts");
+        const data = await response.json();
+        console.log("Fetched NFTs from backend:", data);
+  
+        if (data.nfts) {
+          const gallery = document.getElementById("gallery");
+          gallery.innerHTML = '';
+  
+          for (let nft of data.nfts) {
+            console.log("Processing NFT:", nft);
+            const nftElement = document.createElement("div");
+            nftElement.classList.add("nft");
+  
             try {
-                const response = await fetch("/nfts");
-                const data = await response.json();
-
-                console.log("Fetched NFTs from backend:", data);
-
-                if (data.nfts) {
-                    const gallery = document.getElementById("gallery");
-                    gallery.innerHTML = '';  // Clear the gallery before appending new NFTs
-
-                    // Loop through NFTs and create HTML for each
-                    for (let nft of data.nfts) {
-                        console.log("Processing NFT:", nft);
-
-                        const nftElement = document.createElement("div");
-                        nftElement.classList.add("nft");
-
-                        try {
-                            const metadataResponse = await fetch(nft.metadataURI);
-
-                            // Check if the metadata URI points to a JSON response
-                            const contentType = metadataResponse.headers.get("content-type");
-
-                            if (contentType && contentType.includes("application/json")) {
-                                // It's JSON, fetch the metadata
-                                const metadata = await metadataResponse.json();
-                                const imageUrl = metadata.image || "https://via.placeholder.com/250";  // Fallback image URL
-
-                                nftElement.innerHTML = `
-                                    <img src="${imageUrl}" alt="${nft.name}" />
-                                    <div class="nft-info">
-                                        <h3>${nft.name}</h3>
-                                        <p>${nft.description}</p>
-                                        <p><strong>Metadata URI:</strong> ${nft.metadataURI}</p>
-                                    </div>
-                                `;
-                            } else {
-                                // It's not JSON (likely an image URL)
-                                console.warn(`Metadata for NFT ${nft.name} is not a valid JSON response.`);
-                                nftElement.innerHTML = `
-                                    <img src="${nft.metadataURI}" alt="${nft.name}" />
-                                    <div class="nft-info">
-                                        <h3>${nft.name}</h3>
-                                        <p>${nft.description}</p>
-                                        <p><strong>Metadata URI:</strong> ${nft.metadataURI}</p>
-                                        <p><em>Direct image URL used as metadata.</em></p>
-                                    </div>
-                                `;
-                            }
-                        } catch (error) {
-                            console.error("Error fetching metadata for NFT:", nft.name, error);
-                        }
-
-                        gallery.appendChild(nftElement);
-                    }
-                } else {
-                    alert("No NFTs found for Bob.");
-                }
+              const metadataResponse = await fetch(nft.metadataURI);
+              const contentType = metadataResponse.headers.get("content-type");
+  
+              if (contentType && contentType.includes("application/json")) {
+                const metadata = await metadataResponse.json();
+                const imageUrl = metadata.image || "https://via.placeholder.com/250";
+  
+                nftElement.innerHTML = `
+                  <img src="${imageUrl}" alt="${nft.name}" />
+                  <div class="nft-info">
+                    <h3>${nft.name}</h3>
+                    <p>${nft.description}</p>
+                  </div>
+                `;
+              } else {
+                nftElement.innerHTML = `
+                  <img src="${nft.metadataURI}" alt="${nft.name}" />
+                  <div class="nft-info">
+                    <h3>${nft.name}</h3>
+                    <p>${nft.description}</p>
+                    <p><em>Direct image URL used as metadata.</em></p>
+                  </div>
+                `;
+              }
             } catch (error) {
-                console.error("Error fetching NFTs:", error);
+              console.error("Error fetching metadata for NFT:", nft.name, error);
             }
+  
+            gallery.appendChild(nftElement);
+          }
+        } else {
+          alert("No NFTs found.");
         }
-
-        window.onload = fetchNFTs; // Ensure DOM is fully loaded before running the script
-    </script>
-
+      } catch (error) {
+        console.error("Error fetching NFTs:", error);
+      }
+    }
+  
+    window.onload = fetchNFTs;
+  </script>  
 </body>
 </html>
