@@ -2,7 +2,7 @@
 
 Welcome to **Izzy's NFT Gallery**, a cozy web-based viewer for Aptos NFTs. This project fetches and displays all NFTs held by a specific Aptos wallet — making it easy to showcase your art on-chain in a pastel dream.
 
-![Screenshot](https://emerald-urban-meadowlark-587.mypinata.cloud/ipfs/bafkreigma6an5tbpgvrhrgfwpn5x6ynw67w2eyy7arlqolzmftjv3huns4) 
+[Screenshot](https://emerald-urban-meadowlark-587.mypinata.cloud/ipfs/bafkreigma6an5tbpgvrhrgfwpn5x6ynw67w2eyy7arlqolzmftjv3huns4) 
 
 ---
 
@@ -76,12 +76,12 @@ cd nft-gallery
 
 ### 2. Install dependencies
 
-```bash
+
 npm install
 
 ### 3. Start the server
 
-```bash
+
 npm start
 
 #### The site will be running at http://localhost:3000
