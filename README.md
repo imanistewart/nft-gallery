@@ -2,6 +2,8 @@
 
 Welcome to **Izzy's NFT Gallery**, a cozy web-based viewer for Aptos NFTs. This project fetches and displays all NFTs held by a specific Aptos wallet — making it easy to showcase your art on-chain in a pastel dream.
 
+![Screenshot](https://emerald-urban-meadowlark-587.mypinata.cloud/ipfs/bafkreigma6an5tbpgvrhrgfwpn5x6ynw67w2eyy7arlqolzmftjv3huns4) 
+
 ---
 
 ## ✨ Live Demo
@@ -26,45 +28,6 @@ Welcome to **Izzy's NFT Gallery**, a cozy web-based viewer for Aptos NFTs. This 
 - **Backend:** Node.js + Express
 - **Blockchain:** Aptos using `@aptos-labs/ts-sdk`
 - **Hosting:** [Render](https://render.com)
-
----
-
-## 🚀 How to Run Locally
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/your-username/nft-gallery.git
-cd nft-gallery
-
-### 2. Install dependencies
-
-npm install
-
-### 3. Start the server
-
-npm start
-
-#### The site will be running at http://localhost:3000
-
-## 📤 Send NFTs to the Gallery
-
-### To display your NFT in Izzy’s gallery, simply send it to the Aptos wallet below:
-
-### 0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83
-
-### ✅ NFTs are fetched dynamically
-
-### ⏱️ Your NFT will appear shortly after the transaction is confirmed
-
-### You can also scan the QR code on the site to make sending easier.
-
-
-# 🎨 Izzy's NFT Gallery
-
-Welcome to **Izzy's NFT Gallery** — a cozy, pastel-inspired space on the web that dynamically showcases NFTs from a specific Aptos wallet. 🌈✨
-
-![Screenshot](https://emerald-urban-meadowlark-587.mypinata.cloud/ipfs/bafkreigma6an5tbpgvrhrgfwpn5x6ynw67w2eyy7arlqolzmftjv3huns4) 
 
 ---
 
@@ -102,4 +65,39 @@ Send any Aptos NFTs to the following address and they’ll appear automatically:
 
 ```text
 0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83
+
+## 🚀 How to Run Locally
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/nft-gallery.git
+cd nft-gallery
+
+### 2. Install dependencies
+
+```bash
+npm install
+
+### 3. Start the server
+
+```bash
+npm start
+
+#### The site will be running at http://localhost:3000
+
+## 📤 Send NFTs to the Gallery
+
+### To display your NFT in Izzy’s gallery, simply send it to the Aptos wallet below:
+
+### 0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83
+
+### ✅ NFTs are fetched dynamically
+
+### ⏱️ Your NFT will appear shortly after the transaction is confirmed
+
+### You can also scan the QR code on the site to make sending easier.
+
+
+
 
