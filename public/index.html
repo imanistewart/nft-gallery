@@ -41,12 +41,17 @@
       text-align: center;
     }
 
-    .instructions code {
-      background-color: #eaeaea;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: monospace;
+        .instructions code {
+    background-color: #eaeaea;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    word-break: break-all; /* This is the key fix */
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: break-word;
     }
+
 
     .copy-container {
       margin-top: 10px;
