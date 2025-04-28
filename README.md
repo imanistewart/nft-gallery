@@ -65,6 +65,7 @@ Send any Aptos NFTs to the following address and they’ll appear automatically:
 
 ```text
 0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83
+```
 
 ## 🚀 How to Run Locally
 
@@ -73,30 +74,34 @@ Send any Aptos NFTs to the following address and they’ll appear automatically:
 ```bash
 git clone https://github.com/your-username/nft-gallery.git
 cd nft-gallery
+```
 
 ### 2. Install dependencies
 
-
+```bash
 npm install
+```
 
 ### 3. Start the server
 
-
+```bash
 npm start
+```
 
-#### The site will be running at http://localhost:3000
 
 ## 📤 Send NFTs to the Gallery
 
 ### To display your NFT in Izzy’s gallery, simply send it to the Aptos wallet below:
 
+```bash
 ### 0xaae1b37ed0779136bff41432195b43199877965ad6d591e3521fc0fe2f76ec83
+```
 
 ### ✅ NFTs are fetched dynamically
 
 ### ⏱️ Your NFT will appear shortly after the transaction is confirmed
 
-### You can also scan the QR code on the site to make sending easier.
+### You can also scan the QR code on the site to copy the wallet address, making sending easier.
 
 
 
